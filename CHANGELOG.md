@@ -1,8 +1,8 @@
-# For next release
+# Minor Release v0.2.0 (2024-05-07)
   * **Raphael Pour**
     * add initializer
 
-*Not released yet*
+*Released by Raphael Pour <raphael.pour@hetzner.com>*
 
 # Minor Release v0.1.0 (2024-05-07)
   * **Raphael Pour**
