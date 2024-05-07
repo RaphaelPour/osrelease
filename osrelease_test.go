@@ -30,6 +30,24 @@ func TestVersion(t *testing.T) {
 	)
 }
 
+func TestNewVersion(t *testing.T) {
+	v := New(1, 2, 3)
+	require.Equal(t, 1, v.Major)
+	require.Equal(t, 2, v.Minor)
+	require.Equal(t, 3, v.Patch)
+	require.Empty(t, v.Suffix)
+	require.Equal(t, "1.2.3", v.Original)
+}
+
+func TestNewVersionWithSuffix(t *testing.T) {
+	v := New(1, 2, 3, WithSuffix("-gabc+3"))
+	require.Equal(t, 1, v.Major)
+	require.Equal(t, 2, v.Minor)
+	require.Equal(t, 3, v.Patch)
+	require.Equal(t, "-gabc+3", v.Suffix)
+	require.Equal(t, "1.2.3-gabc+3", v.Original)
+}
+
 func TestExclusiveCompare(t *testing.T) {
 	for _, testCase := range []struct {
 		name      string
