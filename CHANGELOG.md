@@ -1,3 +1,9 @@
+# Patch Release v0.2.1 (2024-05-07)
+  * **Raphael Pour**
+    * dummy release to test release job
+
+*Released by Raphael Pour <raphael.pour@hetzner.com>*
+
 # Minor Release v0.2.0 (2024-05-07)
   * **Raphael Pour**
     * add initializer
