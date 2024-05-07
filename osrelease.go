@@ -25,6 +25,30 @@ type Version struct {
 	Original            string
 }
 
+type Option func(v *Version)
+
+func WithSuffix(suffix string) Option {
+	return func(v *Version) {
+		v.Suffix = suffix
+	}
+}
+
+func New(major, minor, patch int, options ...Option) Version {
+	v := Version{
+		Major: major,
+		Minor: minor,
+		Patch: patch,
+	}
+
+	for _, option := range options {
+		option(&v)
+	}
+
+	v.Original = fmt.Sprintf("%d.%d.%d%s", v.Major, v.Minor, v.Patch, v.Suffix)
+
+	return v
+}
+
 func Parse() (Version, error) {
 	raw, err := os.ReadFile("/proc/sys/kernel/osrelease")
 	if err != nil {
