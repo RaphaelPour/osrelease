@@ -21,3 +21,15 @@ tasks:
         echo "mode: atomic" > coverage/total
         grep "^github.com" -h coverage/*.out | sort >> coverage/total
         go tool cover -html=coverage/total -o coverage/coverage.html
+  release:
+    desc: Create a new release
+    cmds:
+      - ish: changelogger release new
+        ignore_error: yes
+      - git add CHANGELOG.md
+      - git commit -m "Bump version to $(changelogger release last --version-only)" -m "$(changelogger release last)"
+      - 'git tag -a "$(changelogger release last --version-only)" -m "Version: $(changelogger release last)"'
+      - git push
+      - git push --tags
+    env:
+      CHANGELOGGER_VERSION_FORMAT: semver
