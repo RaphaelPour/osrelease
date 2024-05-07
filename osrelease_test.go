@@ -29,3 +29,90 @@ func TestVersion(t *testing.T) {
 		),
 	)
 }
+
+func TestExclusiveCompare(t *testing.T) {
+	for _, testCase := range []struct {
+		name      string
+		v1, v2    string
+		expection bool
+	}{
+		{name: "6.6.2 > 6.6.1", v1: "6.6.2", v2: "6.6.1", expection: true},
+		{name: "6.7.1 > 6.6.1", v1: "6.7.2", v2: "6.6.1", expection: true},
+		{name: "7.6.1 > 6.6.1", v1: "7.6.2", v2: "6.6.1", expection: true},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			v1, err := ParseString(testCase.v1)
+			require.NoError(t, err)
+
+			v2, err := ParseString(testCase.v2)
+			require.NoError(t, err)
+
+			require.Equal(t, testCase.expection, v1.NewerThan(v2))
+			require.Equal(t, !testCase.expection, v2.NewerThan(v1))
+
+			require.Equal(t, !testCase.expection, v1.OlderThan(v2))
+			require.Equal(t, testCase.expection, v2.OlderThan(v1))
+		})
+	}
+}
+
+func TestInclusiveCompare(t *testing.T) {
+	for _, testCase := range []struct {
+		name      string
+		v1, v2    string
+		expection bool
+	}{
+		{name: "6.6.2 >= 6.6.1", v1: "6.6.2", v2: "6.6.1", expection: true},
+		{name: "6.7.1 >= 6.6.1", v1: "6.7.2", v2: "6.6.1", expection: true},
+		{name: "7.6.1 >= 6.6.1", v1: "7.6.2", v2: "6.6.1", expection: true},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			v1, err := ParseString(testCase.v1)
+			require.NoError(t, err)
+
+			v2, err := ParseString(testCase.v2)
+			require.NoError(t, err)
+
+			require.True(t, v1.NotEqual(v2))
+
+			require.Equal(t, testCase.expection, v1.NewerThanOrEqual(v2))
+			require.Equal(t, !testCase.expection, v2.NewerThanOrEqual(v1))
+
+			require.Equal(t, !testCase.expection, v1.OlderThanOrEqual(v2))
+			require.Equal(t, testCase.expection, v2.OlderThanOrEqual(v1))
+		})
+	}
+}
+
+func TestInclusiveComparisonWithEqualVersions(t *testing.T) {
+	v1, err := ParseString("1.2.3")
+	require.NoError(t, err)
+
+	v2, err := ParseString("1.2.3")
+	require.NoError(t, err)
+
+	require.True(t, v1.Equal(v2))
+	require.True(t, v1.OlderThanOrEqual(v2))
+	require.True(t, v2.OlderThanOrEqual(v1))
+	require.True(t, v2.NewerThanOrEqual(v1))
+	require.True(t, v1.NewerThanOrEqual(v2))
+}
+
+func TestErrorCases(t *testing.T) {
+	for _, testCase := range []struct {
+		name string
+		v    string
+		err  error
+	}{
+		{"empty version", "", ErrMatchCountMismatch},
+		{"bad major", "99999999999999999999999999999999999999999999999999999999999999999.0.0", ErrParseVersionNumber},
+		{"bad minor", "0.99999999999999999999999999999999999999999999999999999999999999999.0", ErrParseVersionNumber},
+		{"bad patch", "0.0.99999999999999999999999999999999999999999999999999999999999999999", ErrParseVersionNumber},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			_, err := ParseString(testCase.v)
+			require.NotNil(t, err)
+			require.ErrorIs(t, err, testCase.err)
+		})
+	}
+}
