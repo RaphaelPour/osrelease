@@ -31,18 +31,23 @@ func Parse() (Version, error) {
 		return EmptyVersion, fmt.Errorf("%w: %w", ErrReadOsRelease, err)
 	}
 
-	matches := pattern.FindStringSubmatch(string(raw))
+	return ParseString(string(raw))
+}
+
+func ParseString(s string) (Version, error) {
+	matches := pattern.FindStringSubmatch(s)
 	if len(matches) != 5 {
 		return EmptyVersion, fmt.Errorf(
 			"%w: %w: expected 5, got %d with %s",
 			ErrParseOsRelease,
 			ErrMatchCountMismatch,
 			len(matches),
-			string(raw),
+			s,
 		)
 	}
 
 	var version Version
+	var err error
 	version.Major, err = strconv.Atoi(matches[1])
 	if err != nil {
 		return EmptyVersion, fmt.Errorf(
