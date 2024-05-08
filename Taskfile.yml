@@ -13,7 +13,7 @@ tasks:
     desc: Run go test unittests
     cmds:
       - mkdir -p coverage
-      - go test -run "^Test[^_]" -v ./... -coverprofile=coverage/unittest_coverage.out -covermode=atomic
+      - go test -v ./... -coverprofile=coverage/unittest_coverage.out -covermode=atomic
   coverage:
     desc: Generate coverage report
     cmds:
