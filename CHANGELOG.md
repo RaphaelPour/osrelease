@@ -1,3 +1,10 @@
+# For next release
+  * **Raphael Pour**
+    * hide struct fields behind getter
+    * add MIT license
+
+*Not released yet*
+
 # Patch Release v0.2.1 (2024-05-07)
   * **Raphael Pour**
     * dummy release to test release job

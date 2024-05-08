@@ -16,36 +16,36 @@ func TestVersion(t *testing.T) {
 
 	v, err := Parse()
 	require.NoError(t, err)
-	require.Greater(t, v.Major, 0)
+	require.Greater(t, v.Major(), 0)
 
-	require.Equal(t, out, v.Original)
+	require.Equal(t, out, v.Original())
 	require.Equal(
 		t, out, fmt.Sprintf(
 			"%d.%d.%d%s",
-			v.Major,
-			v.Minor,
-			v.Patch,
-			v.Suffix,
+			v.Major(),
+			v.Minor(),
+			v.Patch(),
+			v.Suffix(),
 		),
 	)
 }
 
 func TestNewVersion(t *testing.T) {
 	v := New(1, 2, 3)
-	require.Equal(t, 1, v.Major)
-	require.Equal(t, 2, v.Minor)
-	require.Equal(t, 3, v.Patch)
-	require.Empty(t, v.Suffix)
-	require.Equal(t, "1.2.3", v.Original)
+	require.Equal(t, 1, v.Major())
+	require.Equal(t, 2, v.Minor())
+	require.Equal(t, 3, v.Patch())
+	require.Empty(t, v.Suffix())
+	require.Equal(t, "1.2.3", v.Original())
 }
 
 func TestNewVersionWithSuffix(t *testing.T) {
 	v := New(1, 2, 3, WithSuffix("-gabc+3"))
-	require.Equal(t, 1, v.Major)
-	require.Equal(t, 2, v.Minor)
-	require.Equal(t, 3, v.Patch)
-	require.Equal(t, "-gabc+3", v.Suffix)
-	require.Equal(t, "1.2.3-gabc+3", v.Original)
+	require.Equal(t, 1, v.Major())
+	require.Equal(t, 2, v.Minor())
+	require.Equal(t, 3, v.Patch())
+	require.Equal(t, "-gabc+3", v.Suffix())
+	require.Equal(t, "1.2.3-gabc+3", v.Original())
 }
 
 func TestExclusiveCompare(t *testing.T) {

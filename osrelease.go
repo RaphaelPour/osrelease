@@ -20,31 +20,28 @@ var (
 )
 
 type Version struct {
-	Major, Minor, Patch int
-	Suffix              string
-	Original            string
+	major, minor, patch int
+	suffix              string
 }
 
 type Option func(v *Version)
 
 func WithSuffix(suffix string) Option {
 	return func(v *Version) {
-		v.Suffix = suffix
+		v.suffix = suffix
 	}
 }
 
 func New(major, minor, patch int, options ...Option) Version {
 	v := Version{
-		Major: major,
-		Minor: minor,
-		Patch: patch,
+		major: major,
+		minor: minor,
+		patch: patch,
 	}
 
 	for _, option := range options {
 		option(&v)
 	}
-
-	v.Original = fmt.Sprintf("%d.%d.%d%s", v.Major, v.Minor, v.Patch, v.Suffix)
 
 	return v
 }
@@ -72,7 +69,7 @@ func ParseString(s string) (Version, error) {
 
 	var version Version
 	var err error
-	version.Major, err = strconv.Atoi(matches[1])
+	version.major, err = strconv.Atoi(matches[1])
 	if err != nil {
 		return EmptyVersion, fmt.Errorf(
 			"%w: %w: major version should be int, is '%s'",
@@ -82,7 +79,7 @@ func ParseString(s string) (Version, error) {
 		)
 	}
 
-	version.Minor, err = strconv.Atoi(matches[2])
+	version.minor, err = strconv.Atoi(matches[2])
 	if err != nil {
 		return EmptyVersion, fmt.Errorf(
 			"%w: %w: minor version should be int, is '%s'",
@@ -92,7 +89,7 @@ func ParseString(s string) (Version, error) {
 		)
 	}
 
-	version.Patch, err = strconv.Atoi(matches[3])
+	version.patch, err = strconv.Atoi(matches[3])
 	if err != nil {
 		return EmptyVersion, fmt.Errorf(
 			"%w: %w: patch version should be int, is '%s'",
@@ -102,20 +99,39 @@ func ParseString(s string) (Version, error) {
 		)
 	}
 
-	version.Original = matches[0]
-	version.Suffix = matches[4]
+	version.suffix = matches[4]
 
 	return version, nil
 }
 
+func (v Version) Original() string {
+	return fmt.Sprintf("%d.%d.%d%s", v.major, v.minor, v.patch, v.suffix)
+}
+
+func (v Version) Major() int {
+	return v.major
+}
+
+func (v Version) Minor() int {
+	return v.minor
+}
+
+func (v Version) Patch() int {
+	return v.patch
+}
+
+func (v Version) Suffix() string {
+	return v.suffix
+}
+
 func (v Version) NewerThan(other Version) bool {
-	if v.Major > other.Major {
+	if v.major > other.major {
 		return true
-	} else if v.Major == other.Major {
-		if v.Minor > other.Minor {
+	} else if v.major == other.major {
+		if v.minor > other.minor {
 			return true
-		} else if v.Minor == other.Minor {
-			return v.Patch > other.Patch
+		} else if v.minor == other.minor {
+			return v.patch > other.patch
 		}
 	}
 
@@ -123,13 +139,13 @@ func (v Version) NewerThan(other Version) bool {
 }
 
 func (v Version) NewerThanOrEqual(other Version) bool {
-	if v.Major > other.Major {
+	if v.major > other.major {
 		return true
-	} else if v.Major == other.Major {
-		if v.Minor > other.Minor {
+	} else if v.major == other.major {
+		if v.minor > other.minor {
 			return true
-		} else if v.Minor == other.Minor {
-			return v.Patch >= other.Patch
+		} else if v.minor == other.minor {
+			return v.patch >= other.patch
 		}
 	}
 
@@ -137,13 +153,13 @@ func (v Version) NewerThanOrEqual(other Version) bool {
 }
 
 func (v Version) OlderThan(other Version) bool {
-	if v.Major < other.Major {
+	if v.major < other.major {
 		return true
-	} else if v.Major == other.Major {
-		if v.Minor < other.Minor {
+	} else if v.major == other.major {
+		if v.minor < other.minor {
 			return true
-		} else if v.Minor == other.Minor {
-			return v.Patch < other.Patch
+		} else if v.minor == other.minor {
+			return v.patch < other.patch
 		}
 	}
 
@@ -151,13 +167,13 @@ func (v Version) OlderThan(other Version) bool {
 }
 
 func (v Version) OlderThanOrEqual(other Version) bool {
-	if v.Major < other.Major {
+	if v.major < other.major {
 		return true
-	} else if v.Major == other.Major {
-		if v.Minor < other.Minor {
+	} else if v.major == other.major {
+		if v.minor < other.minor {
 			return true
-		} else if v.Minor == other.Minor {
-			return v.Patch <= other.Patch
+		} else if v.minor == other.minor {
+			return v.patch <= other.patch
 		}
 	}
 
