@@ -1,6 +1,6 @@
 # For next release
   * **Raphael Pour**
-    * add String and satisfy the string interface
+    * replace original with string to satisfy the string interface
 
 *Not released yet*
 
