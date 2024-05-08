@@ -104,12 +104,8 @@ func ParseString(s string) (Version, error) {
 	return version, nil
 }
 
-func (v Version) Original() string {
-	return fmt.Sprintf("%d.%d.%d%s", v.major, v.minor, v.patch, v.suffix)
-}
-
 func (v Version) String() string {
-	return v.Original()
+	return fmt.Sprintf("%d.%d.%d%s", v.major, v.minor, v.patch, v.suffix)
 }
 
 func (v Version) Major() int {
