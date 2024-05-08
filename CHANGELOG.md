@@ -1,3 +1,9 @@
+# For next release
+  * **Raphael Pour**
+    * add String and satisfy the string interface
+
+*Not released yet*
+
 # Minor Release v0.3.0 (2024-05-08)
   * **Raphael Pour**
     * hide struct fields behind getter
