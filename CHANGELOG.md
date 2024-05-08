@@ -1,6 +1,7 @@
 # For next release
   * **Raphael Pour**
     * replace original with string to satisfy the string interface
+    * doc: add examples for gopkg
 
 *Not released yet*
 
