@@ -108,6 +108,10 @@ func (v Version) Original() string {
 	return fmt.Sprintf("%d.%d.%d%s", v.major, v.minor, v.patch, v.suffix)
 }
 
+func (v Version) String() string {
+	return v.Original()
+}
+
 func (v Version) Major() int {
 	return v.major
 }
