@@ -1,9 +1,9 @@
-# For next release
+# Minor Release v0.3.0 (2024-05-08)
   * **Raphael Pour**
     * hide struct fields behind getter
     * add MIT license
 
-*Not released yet*
+*Released by Raphael Pour <raphael.pour@hetzner.com>*
 
 # Patch Release v0.2.1 (2024-05-07)
   * **Raphael Pour**
