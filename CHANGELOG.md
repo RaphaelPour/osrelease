@@ -1,9 +1,9 @@
-# For next release
+# Minor Release v0.4.0 (2024-05-10)
   * **Raphael Pour**
     * replace original with string to satisfy the string interface
     * doc: add examples for gopkg
 
-*Not released yet*
+*Released by Raphael Pour <raphael.pour@hetzner.com>*
 
 # Minor Release v0.3.0 (2024-05-08)
   * **Raphael Pour**
